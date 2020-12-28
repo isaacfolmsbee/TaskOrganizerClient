@@ -1,5 +1,5 @@
 # Task Organizer Client
-Contains the VueJS front end files for my repo 'TaskOrganizer'
+Contains the VueJS front end files for my repo [TaskOrganizer](https://github.com/Nintron/TaskOrganizer)
 
 ## Initial project setup
 ```
