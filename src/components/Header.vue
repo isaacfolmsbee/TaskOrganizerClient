@@ -1,6 +1,6 @@
 <template>
 	<div class="header">
-		<h1 class="title"><a class="title" href="/">Homework Organizer</a></h1>
+		<h1 class="title"><a class="title" href="/">Task Organizer</a></h1>
 		<div v-if="!this.authtoken">
 			<a href="/register" class="login-register">register</a>
 			<p class="login-register"> / </p>
