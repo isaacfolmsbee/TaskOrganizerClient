@@ -1,11 +1,12 @@
-# client
+# Task Organizer Client
+Contains the VueJS front end files for my repo 'TaskOrganizer'
 
-## Project setup
+## Initial project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compile and run with hot-reloads for development
 ```
 npm run serve
 ```
@@ -19,6 +20,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
