@@ -1,13 +1,15 @@
 <template>
 	<div class="header">
-		<h1 class="title"><a class="title" href="/">Task Organizer</a></h1>
-		<div v-if="!this.authtoken">
-			<a href="/register" class="login-register">register</a>
-			<p class="login-register"> / </p>
-			<a href="/login" class="login-register">login</a>
+		<div class="theme-picker">
+			<p>testing tag</p>
 		</div>
-		<div v-else>
-			<p @click="logout()" class="login-register">logout</p>
+		<a class="header-title" href="/">Task Organizer</a>
+		<div class="links" v-if="!this.authtoken">
+			<a href="/register">register</a>
+			<a href="/login" >login</a>
+		</div>
+		<div class="links" v-else>
+			<a @click="logout()">logout</a>
 		</div>
 	</div>
 </template>
@@ -27,53 +29,48 @@ export default {
 		logout() {
 			sessionStorage.removeItem('authtoken');
 			window.location.href = '/';
+		},
+		home() {
+			window.location.href = '/';
 		}
 	},
 }
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@700&display=swap');
 
 .header {
-	width: 100%;
-	height: 125px;
-	background-color: rgb(31, 28, 25);
+	width: 85%;
+	height: 100px;
+	background-color: #C4C4C4;
+	margin: 20px auto 0 auto;
+	border-radius: 35px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.header-title {
+	color: #000000;
+	text-decoration: none;
+	font-family: 'Ubuntu Mono', monospace;
+	font-size: 64px;
+}
+
+.links {
+	font-family: 'Ubuntu Mono', monospace;
+	font-size: 24px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	text-align: center;
+	padding-left: 50%;
 }
 
-.title {
-	color: rgb(91, 199, 163);
-	padding: 30px 0 0 0;
+.links a {
 	text-decoration: none;
-	font-size: 50px;
-	transition: 250ms;
-}
-
-.title:hover {
-	color: aquamarine;
-	transition: 250ms;
-}
-
-.login-register {
-	color: gray;
-	font-size: 18px;
-	text-decoration: none;
-	display: inline;
-	cursor: pointer;
-}
-
-@media only screen and (max-width: 650px) {
-	.header {
-		height: 80px;
-	}
-
-	.title {
-		padding: 20px 0 0 0;
-		font-size: 25px;
-	}
-
-	.login-register {
-		font-size: 14px;
-	}
+	color: #000000;
 }
 </style>

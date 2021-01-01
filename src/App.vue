@@ -1,9 +1,7 @@
 <template>
 	<div id="app">
 		<Header />
-		<div class="body-content">
-			<router-view></router-view>
-		</div>
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -21,15 +19,10 @@ export default {
 <style>
 * {
 	margin: 0;
+	padding: 0;
 }
 
-body {
-	background-color: rgb(190, 190, 190);
-}
-
-.body-content {
-	margin-left: 10%;
-	margin-right: 10%;
-	font-size: 25px;
+#app {
+	background-color: #ffffff;
 }
 </style>
