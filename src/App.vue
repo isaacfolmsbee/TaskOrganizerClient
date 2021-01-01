@@ -1,17 +1,22 @@
 <template>
 	<div id="app">
 		<Header />
-		<router-view></router-view>
+		<Notice />
+		<div class="body-wrapper">
+			<router-view></router-view>
+		</div>
 	</div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
+import Notice from './components/Notice.vue'
 
 export default {
 	name: 'App',
 	components: {
-		Header
+		Header,
+		Notice
 	}
 }
 </script>
@@ -22,7 +27,27 @@ export default {
 	padding: 0;
 }
 
-#app {
+:root {
 	background-color: #ffffff;
+	font-size: 24px;
+	font-family: 'Rubik', sans-serif;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	
+	display: flex;
+	flex-direction: column;
+}
+
+.body-wrapper {
+	width: 55rem;
+	max-height: 31rem;
+	flex: 1;
+	margin: 0 auto;
+	padding-bottom: 0.15rem;
+	border-radius: 50px;
+	background-color: #C4C4C4;
 }
 </style>

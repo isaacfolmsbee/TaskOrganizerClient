@@ -1,22 +1,29 @@
 <template>
-	<div class="container" v-if="this.authtoken">
-		<div class="create-task">
-			<input type="text" id="task-name" v-model="text" placeholder="Task Name...">
-			<input type="text" id="task-duedate" v-model="dueDate" placeholder="Date...">
-			<input type="text" id="task-completiontime" v-model="timeToComplete" placeholder="Time...">
-			<button @click="createTask()">Submit Task</button>
+	<div v-if="this.authtoken">
+		<div class="task-tab">
+			<h1>Dev</h1>
+			<h1>Homework</h1>
+			<h1>+</h1>
 		</div>
+
 		<hr>
-		<div class="tasks-container">
-			<div class="task"
+
+		<div class="task-list">
+			<div class="task-wrapper"
 				v-for="task in tasks"
 				:key="task._id"
-				@contextmenu.prevent
-				:class="{ deleted: task.isDeleted }"
-				@click="deleteTask(task)"
-				@mouseup.right="editTask(task)"
 			>
-				<p class="text">{{ task.text + ' | ' + task.dueDate + ' | ' + task.timeToComplete }}</p>
+				<div class="task-datetime">
+					<p>Due: {{ task.dueDate }}</p>
+					<p>{{ task.timeToComplete }}</p>
+				</div>
+				<div class="task-desc">
+					<h1>{{ task.text }}</h1>
+				</div>
+				<div class="task-buttons">
+					<h4 @click="deleteTask(task)">Edit</h4>
+					<h4>Delete</h4>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -71,85 +78,123 @@ export default {
 </script>
 
 <style scoped>
-.notice {
+.task-tab {
+	width: 87.5%;
+	height: 2.5rem;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.65em;
+}
+
+.task-tab h1 {
+	padding: 0.225rem 0.5rem;
+	border-radius: 50px;
+	margin: 0 0.25rem;
+	background-color: #6C6C6C;
+}
+
+.body-wrapper hr {
+	margin: 0 auto;
+	width: 92.5%;
+	background-color: #6C6C6C;
+	border: 1.5px solid #6C6C6C;
+	border-radius: 10px;
+}
+
+/* Task CSS */
+
+.task-list {
+	width: 92.5%;
+	height: 28.3rem;
+	overflow: auto;
+	margin: 0.1rem auto;
+}
+
+/* Firefox scroll-bar */
+.task-list {
+	scrollbar-width: 0.5rem;
+	scrollbar-color: #000000 #6C6C6C;
+}
+
+/* Chrome, Edge, and Safari scroll-bar */
+.task-list::-webkit-scrollbar {
+	width: 0.375rem;
+}
+
+.task-list::-webkit-scrollbar-track {
+	background: #6C6C6C;
+	border-radius: 15px;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+	background-color: #C4C4C4;
+	border-radius: 15px;
+	border: 3px solid #6C6C6C;
+}
+
+.task-wrapper {
+	width: 87.5%;
+	height: 4rem;
+	border-radius: 50px;
+	margin: 0.35rem auto 0 auto;
+	display: grid;
+	grid-template-columns: 9fr 1fr;
+	grid-template-rows: 1fr 3fr;
+	background-color: #6C6C6C;
+	
+}
+
+.task-wrapper:last-child {
+	margin-bottom: 0.35rem;
+}
+
+.task-datetime {
+	grid-column: 1/2;
+	display: flex;
+
+	/* To center based on task-wrapper */
+	margin-left: 12.5%;
+}
+
+.task-datetime p {
+	display: inline;
+	width: 50%;
+}
+
+.task-datetime p:first-child {
+	text-align: right;
+	margin-right: 0.75rem;
+}
+
+.task-datetime p:last-child {
+	margin-left: 0.75rem;
+}
+
+.task-desc {
+	grid-column: 1/2;
+	grid-row: 2/3;
+	margin-left: 1.25rem;
 	text-align: center;
 }
 
-.create-task {
-	display: flex;
-	justify-content: center;
-	padding: 15px;
+.task-desc h1 {
+	font-size: 1.15rem;
 }
 
-.create-task input, .create-task button {
-	margin: 0 12px 0 0;
-	font-size: 0.85em;
-	width: 20%;
-
-	padding: 2px;
-	border: 2px solid black;
-	border-radius: 8px;
-	background-color: rgb(246, 246, 246);
-}
-
-.create-task button {
-	cursor: pointer;
-	transition: 200ms;
-}
-
-.create-task button:hover {
-	background-color: rgba(0, 0, 0, 0.164);
-	color: black;
-	transition: 200ms;
-}
-
-.tasks-container {
+.task-buttons {
+	/* Unneeded? */
+	grid-column: 2/3;
+	grid-row: 1/3;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	margin: 0.5rem 0;
+	/*  */
 }
 
-.task {
-	border: 2px solid;
-	width: 75%;
-	border-radius: 8px;
-	margin: 14px 0 0 0;
-	padding: 8px;
-	text-align: center;
-	cursor: pointer;
-	transition: 200ms;
-}
-
-.task:hover {
-	background-color: rgba(0, 0, 0, 0.164);
-	transition: 200ms;
-}
-
-.task.deleted {
-	background-color: rgba(255, 0, 0, 0.568);
-	transition: 350ms;
-}
-
-@media only screen and (max-width: 850px) {
-	.create-task {
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.create-task input, .create-task button {
-		margin: 12px 0 0 0;
-		width: 100%;
-		background-color: rgb(246, 246, 246);
-	}
-
-	.task {
-		width: 95%;
-	}
-
-	.create-task button {
-		width: fit-content;
-		padding: 0 5%;
-	}
+.task-buttons h4 {
+	margin: auto 0;
 }
 </style>

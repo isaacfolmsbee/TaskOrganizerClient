@@ -1,15 +1,16 @@
 <template>
-	<div class="header">
-		<div class="theme-picker">
-			<p>testing tag</p>
+	<div class="header-wrapper">
+		<div class="theme-selector">
 		</div>
-		<a class="header-title" href="/">Task Organizer</a>
+		<div class="title">
+			<a href="/">Task Organizer</a>
+		</div>
 		<div class="links" v-if="!this.authtoken">
-			<a href="/register">register</a>
-			<a href="/login" >login</a>
+			<a href="/login">Login</a>
+			<a href="/register">Register</a>
 		</div>
 		<div class="links" v-else>
-			<a @click="logout()">logout</a>
+			<a @click="logout()">Logout</a>
 		</div>
 	</div>
 </template>
@@ -38,39 +39,45 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@700&display=swap');
-
-.header {
-	width: 85%;
+.header-wrapper {
+	width: 60rem;
 	height: 100px;
-	background-color: #C4C4C4;
 	margin: 20px auto 0 auto;
-	border-radius: 35px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	background-color: #C4C4C4;
+	border-radius: 50px;
+	display: grid;
+	grid-template-columns: 1fr 2fr 1fr;
 }
 
-.header-title {
-	color: #000000;
+/* .theme-selector {
+	Fill in later
+} */
+
+.title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.title a {
+	font-size: 2.25em;
 	text-decoration: none;
-	font-family: 'Ubuntu Mono', monospace;
-	font-size: 64px;
+	color: #000000;
+	font-weight: 700;
 }
 
 .links {
-	font-family: 'Ubuntu Mono', monospace;
-	font-size: 24px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	text-align: center;
-	padding-left: 50%;
 }
 
 .links a {
+	margin: 0.1em 0;
+	font-size: 0.95em;
 	text-decoration: none;
 	color: #000000;
+	font-weight: 500;
 }
 </style>
