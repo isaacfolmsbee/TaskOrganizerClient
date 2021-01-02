@@ -1,9 +1,11 @@
 <template>
 	<div v-if="this.authtoken">
 		<div class="task-tab">
-			<h1>Dev</h1>
-			<h1>Homework</h1>
-			<h1>+</h1>
+			<h1 
+				v-for="(category, name) in categories"
+				:key="name"
+				@click="setTasks(name)">{{ name }}</h1>
+				<h1>+</h1>
 		</div>
 
 		<hr>
@@ -12,6 +14,7 @@
 			<div class="task-wrapper"
 				v-for="task in tasks"
 				:key="task._id"
+				:class="{ deleted: task.isDeleted }"
 			>
 				<div class="task-datetime">
 					<p>Due: {{ task.dueDate }}</p>
@@ -21,8 +24,8 @@
 					<h1>{{ task.text }}</h1>
 				</div>
 				<div class="task-buttons">
-					<h4 @click="deleteTask(task)">Edit</h4>
-					<h4>Delete</h4>
+					<h4>Edit</h4>
+					<h4 @click="deleteTask(task)">Delete</h4>
 				</div>
 			</div>
 		</div>
@@ -39,6 +42,8 @@ export default {
 	name: 'Tasks',
 	data() {
 		return {
+			categories: {},
+			selectedCategory: '',
 			tasks: [],
 			text: '',
 			dueDate: '',
@@ -48,9 +53,16 @@ export default {
 	},
 	async created() {
 		this.authtoken = sessionStorage.getItem('authtoken');
-		this.tasks = await TaskHandler.getTasks(this.authtoken);
+		this.categories = await TaskHandler.getCategories(this.authtoken);
+		//set this.tasks to the first category of tasks in categories
+		this.tasks = this.categories[Object.keys(this.categories)[0]];
+		this.selectedCategory = Object.keys(this.categories)[0];
 	},
 	methods: {
+		setTasks(category) {
+			this.tasks = this.categories[category];
+			this.selectedCategory = category;
+		},
 		async createTask() {
 			await TaskHandler.insertTask(this.text, this.dueDate, this.timeToComplete, this.authtoken);
 			this.tasks = await TaskHandler.getTasks(this.authtoken);
@@ -63,8 +75,9 @@ export default {
 
 			await new Promise(r => setTimeout(r, 350));
 
-			await TaskHandler.deleteTask(task._id, this.authtoken);
-			this.tasks = await TaskHandler.getTasks(this.authtoken);
+			await TaskHandler.deleteTask(this.selectedCategory, task._id, this.authtoken);
+			this.categories = await TaskHandler.getCategories(this.authtoken);
+			this.tasks = this.categories[this.selectedCategory];
 		},
 		async editTask(task) {
 			this.text = task.text;
@@ -148,6 +161,11 @@ export default {
 
 .task-wrapper:last-child {
 	margin-bottom: 0.35rem;
+}
+
+.task-wrapper.deleted {
+	background-color: rgba(255, 0, 0, 0.568);
+	transition: 350ms;
 }
 
 .task-datetime {

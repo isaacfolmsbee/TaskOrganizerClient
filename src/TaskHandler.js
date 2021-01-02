@@ -3,26 +3,26 @@ import axios from 'axios';
 const url = 'api/tasks/';
 
 class TaskHandler {
-
 	// Get Tasks Organized by date than time to complete
-	static getTasks(jwt) {
+	static getCategories(jwt) {
 		return new Promise((resolve, reject) => {
 			axios
-				.get(
-					url,
-					{
-						headers: {
-							authtoken: jwt,
-						},
-					}
-				)
+				.get(url, {
+					headers: {
+						authtoken: jwt,
+					},
+				})
 				.then((res) => {
 					const data = res.data;
+
+					const keys = Object.keys(data.categories);
+					for (let i in keys) {
+						for (let index = 0; index < data.categories[keys[i]].length; index++) {
+							data.categories[keys[i]][index].isDeleted = false;
+						}
+					}
 					resolve(
-						data.tasks.map((tasks) => ({
-							...tasks,
-							isDeleted: false,
-						}))
+						data.categories
 					);
 				})
 				.catch((err) => {
@@ -49,15 +49,12 @@ class TaskHandler {
 	}
 
 	// Delete Tasks
-	static deleteTask(id, jwt) {
-		return axios.delete(
-			`${url}${id}`,
-			{
-				headers: {
-					authtoken: jwt,
-				},
-			}
-		);
+	static deleteTask(category, id, jwt) {
+		return axios.delete(`${url}${category}/${id}`, {
+			headers: {
+				authtoken: jwt,
+			},
+		});
 	}
 }
 
