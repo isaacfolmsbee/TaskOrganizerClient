@@ -1,12 +1,24 @@
 <template>
 	<div v-if="authtoken">
 		<div class="task-tab">
-			<h1 
+			<div class="category"
 				v-for="(category, name) in categories"
 				:key="name"
-				:class="{ selected: isSelected(name) }"
-				@click="setTasks(name)">{{ name }}</h1>
+				:class="{ selected: isSelected(name) }">
+
+				<h1 @click="setTasks(name)">
+					{{ name }}
+				</h1>
+				<h1 
+					v-if="name == selectedCategory"
+					@click="deleteCategory()"
+					style="margin-left: 0.4rem; color: #c33737">
+					-
+				</h1>
+			</div>
+			<div class="category">
 				<h1 @click="openCategoryModal()">+</h1>
+			</div>
 		</div>
 
 		<div class="add-task">
@@ -83,6 +95,7 @@ export default {
 	async created() {
 		this.authtoken = sessionStorage.getItem('authtoken');
 		this.categories = await TaskHandler.getCategories(this.authtoken);
+
 		//set this.tasks to the first category of tasks in categories
 		this.tasks = this.categories[Object.keys(this.categories)[0]];
 		this.selectedCategory = Object.keys(this.categories)[0];
@@ -99,6 +112,13 @@ export default {
 			this.isModalActive = false
 			this.activeModal = 'task';
 			this.text = '';
+		},
+		async deleteCategory() {
+			await TaskHandler.deleteCategory(this.selectedCategory, this.authtoken);
+
+			this.categories = await TaskHandler.getCategories(this.authtoken);
+			this.tasks = this.categories[Object.keys(this.categories)[0]];
+			this.selectedCategory = Object.keys(this.categories)[0];
 		},
 		async createTask() {
 
@@ -135,7 +155,7 @@ export default {
 			this.isModalActive = true;
 		},
 		isSelected(name) {
-			return name == this.selectedCategory ? true : false;
+			return name == this.selectedCategory;
 		},
 		openCategoryModal() {
 			this.isModalActive = true;
@@ -164,16 +184,19 @@ export default {
 	font-size: 0.65em;
 }
 
-.task-tab h1 {
+.task-tab div.category {
 	padding: 0.225rem 0.5rem;
 	border-radius: 50px;
 	margin: 0 0.25rem;
 	background-color: #6C6C6C;
-	cursor: pointer;
-	transition: 250ms;
 }
 
-.task-tab h1.selected {
+.task-tab div.category h1 {
+	display: inline-block;
+	cursor: pointer;
+}
+
+.task-tab div.selected {
 	color: #f8f8f8;
 }
 

@@ -47,6 +47,17 @@ class TaskHandler {
 		);
 	}
 
+	static deleteCategory(category, jwt) {
+		return axios.delete(`${url}category`, {
+			headers: {
+				authtoken: jwt,
+			},
+			data: {
+				category,
+			},
+		});
+	}
+
 	// Create Tasks
 	static insertTask(category, text, dueDate, timeToComplete, jwt) {
 		return axios.post(
