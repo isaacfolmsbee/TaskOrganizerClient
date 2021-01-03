@@ -1,5 +1,5 @@
 <template>
-	<div v-if="this.authtoken">
+	<div v-if="authtoken">
 		<div class="task-tab">
 			<h1 
 				v-for="(category, name) in categories"
@@ -11,7 +11,7 @@
 
 		<div class="add-task">
 			<hr>
-				<h4>Add Task</h4>
+				<h4 @click="isModalActive = true">Add Task</h4>
 			<hr>
 		</div>
 
@@ -34,6 +34,18 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal-bg"
+			:class="{ active: isModalActive }">
+			<div class="modal">
+				<span class="modal-close"
+					@click="isModalActive = false">X</span>
+				<h3>Add Task - {{ selectedCategory }}</h3>
+				<input type="text" v-model="text" placeholder="Task Name...">
+				<input type="text" v-model="dueDate" placeholder="Date...">
+				<input type="text" v-model="timeToComplete" placeholder="Time...">
+				<button @click="createTask()">Submit Task</button>
+			</div>
+		</div>
 	</div>
 	<div v-else>
 		<h1 class="notice">Please login to use website</h1>
@@ -53,7 +65,8 @@ export default {
 			text: '',
 			dueDate: '',
 			timeToComplete: '',
-			authtoken: ''
+			authtoken: '',
+			isModalActive: false
 		}
 	},
 	async created() {
@@ -69,11 +82,15 @@ export default {
 			this.selectedCategory = category;
 		},
 		async createTask() {
-			await TaskHandler.insertTask(this.text, this.dueDate, this.timeToComplete, this.authtoken);
-			this.tasks = await TaskHandler.getTasks(this.authtoken);
+			await TaskHandler.insertTask(
+				this.selectedCategory, this.text, this.dueDate, this.timeToComplete, this.authtoken);
+
+			this.categories = await TaskHandler.getCategories(this.authtoken);
+			this.tasks = this.categories[this.selectedCategory];
 			this.text = '';
 			this.dueDate = '';
 			this.timeToComplete = '';
+			this.isModalActive = false
 		},
 		async deleteTask(task) {
 			task.isDeleted = true;
@@ -247,5 +264,53 @@ export default {
 
 .task-buttons h4 {
 	margin: auto 0;
+}
+
+/* Modal CSS */
+.modal-bg {
+	position: fixed;
+	width: 100%;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.45);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0s, opacity 450ms;
+}
+
+.modal-bg.active {
+	visibility: visible;
+	opacity: 1;
+}
+
+.modal {
+	position: relative;
+	width: 20rem;
+	height: 15rem;
+	background-color: #ffffff;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-direction: column;
+}
+
+.modal-close {
+	position: absolute;
+	top: 0.25rem;
+	right: 0.25rem;
+	cursor: pointer;
+}
+
+.modal button {
+	padding: 0.25rem 0.4rem;
+	background-color: #C4C4C4;
+	border: none;
+	border-radius: 25px;
+	font-family: 'Rubik', sans-serif;
+	cursor: pointer;
 }
 </style>

@@ -32,13 +32,14 @@ class TaskHandler {
 	}
 
 	// Create Tasks
-	static insertTask(text, dueDate, timeToComplete, jwt) {
+	static insertTask(category, text, dueDate, timeToComplete, jwt) {
 		return axios.post(
 			url,
 			{
-				text: text,
-				dueDate: dueDate,
-				timeToComplete: timeToComplete,
+				category,
+				text,
+				dueDate,
+				timeToComplete,
 			},
 			{
 				headers: {
