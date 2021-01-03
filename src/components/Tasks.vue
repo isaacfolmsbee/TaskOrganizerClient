@@ -4,11 +4,16 @@
 			<h1 
 				v-for="(category, name) in categories"
 				:key="name"
+				:class="{ selected: isSelected(name) }"
 				@click="setTasks(name)">{{ name }}</h1>
 				<h1>+</h1>
 		</div>
 
-		<hr>
+		<div class="add-task">
+			<hr>
+				<h4>Add Task</h4>
+			<hr>
+		</div>
 
 		<div class="task-list">
 			<div class="task-wrapper"
@@ -85,6 +90,9 @@ export default {
 			this.timeToComplete = task.timeToComplete;
 
 			await this.deleteTask(task);
+		},
+		isSelected(name) {
+			return name == this.selectedCategory ? true : false;
 		}
 	},
 }
@@ -106,11 +114,36 @@ export default {
 	border-radius: 50px;
 	margin: 0 0.25rem;
 	background-color: #6C6C6C;
+	cursor: pointer;
+	transition: 250ms;
 }
 
-.body-wrapper hr {
-	margin: 0 auto;
-	width: 92.5%;
+.task-tab h1.selected {
+	color: #f8f8f8;
+}
+
+/* Add Task CSS */
+
+.add-task {
+	width: 100%;
+	height: 0.75rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.add-task h4 {
+	padding: 0.1rem 0.2rem;
+	font-size: 0.65rem;
+	background-color: #6C6C6C;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.add-task hr {
+	width: 42.5%;
+	height: 0.2rem;
+	margin: 0 0.5rem;
 	background-color: #6C6C6C;
 	border: 1.5px solid #6C6C6C;
 	border-radius: 10px;
@@ -120,9 +153,9 @@ export default {
 
 .task-list {
 	width: 92.5%;
-	height: 28.3rem;
+	height: 27.5rem;
 	overflow: auto;
-	margin: 0.1rem auto;
+	margin: 0.25rem auto;
 }
 
 /* Firefox scroll-bar */
@@ -164,7 +197,7 @@ export default {
 }
 
 .task-wrapper.deleted {
-	background-color: rgba(255, 0, 0, 0.568);
+	background-color: #c33737;
 	transition: 350ms;
 }
 
