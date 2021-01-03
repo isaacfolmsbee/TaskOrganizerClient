@@ -33,6 +33,20 @@ class TaskHandler {
 		});
 	}
 
+	static insertCategory(category, jwt) {
+		return axios.post(
+			`${url}category`,
+			{
+				category,
+			},
+			{
+				headers: {
+					authtoken: jwt,
+				},
+			}
+		);
+	}
+
 	// Create Tasks
 	static insertTask(category, text, dueDate, timeToComplete, jwt) {
 		return axios.post(

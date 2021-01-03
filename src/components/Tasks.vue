@@ -6,7 +6,7 @@
 				:key="name"
 				:class="{ selected: isSelected(name) }"
 				@click="setTasks(name)">{{ name }}</h1>
-				<h1>+</h1>
+				<h1 @click="openCategoryModal()">+</h1>
 		</div>
 
 		<div class="add-task">
@@ -36,7 +36,8 @@
 		</div>
 		<div class="modal-bg"
 			:class="{ active: isModalActive }">
-			<div class="modal">
+			<div class="task-modal"
+				v-if="activeModal == 'task'">
 				<span class="modal-close"
 					@click="closeModal()">X</span>
 				<h3>Add Task - {{ selectedCategory }}</h3>
@@ -44,6 +45,14 @@
 				<input type="text" v-model="dueDate" placeholder="Date...">
 				<input type="text" v-model="timeToComplete" placeholder="Time...">
 				<button @click="createTask()">Submit Task</button>
+			</div>
+			<div v-else
+				class="category-modal">
+				<span class="modal-close"
+					@click="closeModal()">X</span>
+				<h3>Add Category</h3>
+				<input type="text" v-model="text" placeholder="Category Name...">
+				<button @click="createCategory()">Submit Category</button>
 			</div>
 		</div>
 	</div>
@@ -67,6 +76,7 @@ export default {
 			timeToComplete: '',
 			authtoken: '',
 			isModalActive: false,
+			activeModal: 'task',
 			editingTask: null
 		}
 	},
@@ -82,6 +92,14 @@ export default {
 			this.tasks = this.categories[category];
 			this.selectedCategory = category;
 		},
+		async createCategory() {
+			await TaskHandler.insertCategory(this.text, this.authtoken);
+			this.categories = await TaskHandler.getCategories(this.authtoken);
+
+			this.isModalActive = false
+			this.activeModal = 'task';
+			this.text = '';
+		},
 		async createTask() {
 
 			if (this.editingTask) {
@@ -96,7 +114,7 @@ export default {
 			this.text = '';
 			this.dueDate = '';
 			this.timeToComplete = '';
-			this.isModalActive = false
+			this.isModalActive = false;
 		},
 		async deleteTask(task) {
 			if (!this.editingTask) {
@@ -119,8 +137,13 @@ export default {
 		isSelected(name) {
 			return name == this.selectedCategory ? true : false;
 		},
+		openCategoryModal() {
+			this.isModalActive = true;
+			this.activeModal = 'category';
+		},
 		closeModal() {
 			this.isModalActive = false;
+			this.activeModal = 'task';
 			this.editingTask = null;
 			this.text = '';
 			this.dueDate = '';
@@ -302,10 +325,21 @@ export default {
 	opacity: 1;
 }
 
-.modal {
+.task-modal {
 	position: relative;
 	width: 20rem;
 	height: 15rem;
+	background-color: #ffffff;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-direction: column;
+}
+
+.category-modal {
+	position: relative;
+	width: 18rem;
+	height: 10rem;
 	background-color: #ffffff;
 	display: flex;
 	justify-content: space-around;
