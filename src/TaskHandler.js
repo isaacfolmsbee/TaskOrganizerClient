@@ -17,13 +17,15 @@ class TaskHandler {
 
 					const keys = Object.keys(data.categories);
 					for (let i in keys) {
-						for (let index = 0; index < data.categories[keys[i]].length; index++) {
+						for (
+							let index = 0;
+							index < data.categories[keys[i]].length;
+							index++
+						) {
 							data.categories[keys[i]][index].isDeleted = false;
 						}
 					}
-					resolve(
-						data.categories
-					);
+					resolve(data.categories);
 				})
 				.catch((err) => {
 					reject(err);

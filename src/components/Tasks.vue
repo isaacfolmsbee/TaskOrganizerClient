@@ -29,7 +29,7 @@
 					<h1>{{ task.text }}</h1>
 				</div>
 				<div class="task-buttons">
-					<h4>Edit</h4>
+					<h4 @click="editTask(task)">Edit</h4>
 					<h4 @click="deleteTask(task)">Delete</h4>
 				</div>
 			</div>
@@ -38,7 +38,7 @@
 			:class="{ active: isModalActive }">
 			<div class="modal">
 				<span class="modal-close"
-					@click="isModalActive = false">X</span>
+					@click="closeModal()">X</span>
 				<h3>Add Task - {{ selectedCategory }}</h3>
 				<input type="text" v-model="text" placeholder="Task Name...">
 				<input type="text" v-model="dueDate" placeholder="Date...">
@@ -66,7 +66,8 @@ export default {
 			dueDate: '',
 			timeToComplete: '',
 			authtoken: '',
-			isModalActive: false
+			isModalActive: false,
+			editingTask: null
 		}
 	},
 	async created() {
@@ -82,6 +83,11 @@ export default {
 			this.selectedCategory = category;
 		},
 		async createTask() {
+
+			if (this.editingTask) {
+				await this.deleteTask(this.editingTask);
+				this.editingTask = null;
+			}
 			await TaskHandler.insertTask(
 				this.selectedCategory, this.text, this.dueDate, this.timeToComplete, this.authtoken);
 
@@ -93,23 +99,32 @@ export default {
 			this.isModalActive = false
 		},
 		async deleteTask(task) {
-			task.isDeleted = true;
-
-			await new Promise(r => setTimeout(r, 350));
+			if (!this.editingTask) {
+				task.isDeleted = true;
+				await new Promise(r => setTimeout(r, 350));
+			}
 
 			await TaskHandler.deleteTask(this.selectedCategory, task._id, this.authtoken);
 			this.categories = await TaskHandler.getCategories(this.authtoken);
 			this.tasks = this.categories[this.selectedCategory];
 		},
 		async editTask(task) {
+			this.editingTask = task;
 			this.text = task.text;
 			this.dueDate = task.dueDate;
 			this.timeToComplete = task.timeToComplete;
 
-			await this.deleteTask(task);
+			this.isModalActive = true;
 		},
 		isSelected(name) {
 			return name == this.selectedCategory ? true : false;
+		},
+		closeModal() {
+			this.isModalActive = false;
+			this.editingTask = null;
+			this.text = '';
+			this.dueDate = '';
+			this.timeToComplete = '';
 		}
 	},
 }
