@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<Header />
-		<Notice />
+		<!-- <Notice /> -->
 		<div class="body-wrapper">
 			<router-view></router-view>
 		</div>
@@ -10,13 +10,13 @@
 
 <script>
 import Header from './components/Header.vue'
-import Notice from './components/Notice.vue'
+// import Notice from './components/Notice.vue'
 
 export default {
 	name: 'App',
 	components: {
 		Header,
-		Notice
+		// Notice
 	}
 }
 </script>
@@ -43,10 +43,9 @@ body {
 
 .body-wrapper {
 	width: 55rem;
-	max-height: 31rem;
+	height: 32rem;
 	flex: 1;
 	margin: 0 auto;
-	padding-bottom: 0.15rem;
 	border-radius: 50px;
 	background-color: #C4C4C4;
 }

@@ -231,7 +231,7 @@ export default {
 
 .task-list {
 	width: 92.5%;
-	height: 27.5rem;
+	height: 28.46rem;
 	overflow: auto;
 	margin: 0.25rem auto;
 }

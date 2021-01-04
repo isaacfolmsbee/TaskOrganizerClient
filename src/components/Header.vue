@@ -42,7 +42,7 @@ export default {
 .header-wrapper {
 	width: 60rem;
 	height: 100px;
-	margin: 20px auto 0 auto;
+	margin: 20px auto 20px auto;
 	background-color: #C4C4C4;
 	border-radius: 50px;
 	display: grid;
