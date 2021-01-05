@@ -1,5 +1,13 @@
 <template>
 	<div v-if="authtoken">
+		<Modal 
+			:isActive="isModalActive" 
+			:activeModal="activeModal" 
+			:task="task"
+			:category="selectedCategory"
+			@createTask="createTask($event)"
+			@createCategory="createCategory($event)"
+			@closeModal="closeModal()" />
 		<div class="task-tab">
 			<div class="category"
 				v-for="(category, name) in categories"
@@ -46,27 +54,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal-bg"
-			:class="{ active: isModalActive }">
-			<div class="task-modal"
-				v-if="activeModal == 'task'">
-				<span class="modal-close"
-					@click="closeModal()">X</span>
-				<h3>Add Task - {{ selectedCategory }}</h3>
-				<input type="text" v-model="text" placeholder="Task Name...">
-				<input type="text" v-model="dueDate" placeholder="Date...">
-				<input type="text" v-model="timeToComplete" placeholder="Time...">
-				<button @click="createTask()">Submit Task</button>
-			</div>
-			<div v-else
-				class="category-modal">
-				<span class="modal-close"
-					@click="closeModal()">X</span>
-				<h3>Add Category</h3>
-				<input type="text" v-model="text" placeholder="Category Name...">
-				<button @click="createCategory()">Submit Category</button>
-			</div>
-		</div>
 	</div>
 	<div v-else>
 		<h1 class="notice">Please login to use website</h1>
@@ -75,17 +62,23 @@
 
 <script>
 import TaskHandler from '../TaskHandler'
+import Modal from './Modal'
 
 export default {
 	name: 'Tasks',
+	components: {
+		Modal,
+	},
 	data() {
 		return {
 			categories: {},
 			selectedCategory: '',
 			tasks: [],
-			text: '',
-			dueDate: '',
-			timeToComplete: '',
+			task: {
+				text: '',
+				dueDate: '',
+				timeToComplete: '',
+			},
 			authtoken: '',
 			isModalActive: false,
 			activeModal: 'task',
@@ -105,13 +98,13 @@ export default {
 			this.tasks = this.categories[category];
 			this.selectedCategory = category;
 		},
-		async createCategory() {
-			await TaskHandler.insertCategory(this.text, this.authtoken);
+		async createCategory(text) {
+			await TaskHandler.insertCategory(text, this.authtoken);
 			this.categories = await TaskHandler.getCategories(this.authtoken);
 
 			this.isModalActive = false
 			this.activeModal = 'task';
-			this.text = '';
+			this.task.text = '';
 		},
 		async deleteCategory() {
 			await TaskHandler.deleteCategory(this.selectedCategory, this.authtoken);
@@ -120,20 +113,20 @@ export default {
 			this.tasks = this.categories[Object.keys(this.categories)[0]];
 			this.selectedCategory = Object.keys(this.categories)[0];
 		},
-		async createTask() {
+		async createTask(task) {
 
 			if (this.editingTask) {
 				await this.deleteTask(this.editingTask);
 				this.editingTask = null;
 			}
 			await TaskHandler.insertTask(
-				this.selectedCategory, this.text, this.dueDate, this.timeToComplete, this.authtoken);
+				this.selectedCategory, task.text, task.dueDate, task.timeToComplete, this.authtoken);
 
 			this.categories = await TaskHandler.getCategories(this.authtoken);
 			this.tasks = this.categories[this.selectedCategory];
-			this.text = '';
-			this.dueDate = '';
-			this.timeToComplete = '';
+			this.task.text = '';
+			this.task.dueDate = '';
+			this.task.timeToComplete = '';
 			this.isModalActive = false;
 		},
 		async deleteTask(task) {
@@ -148,9 +141,9 @@ export default {
 		},
 		async editTask(task) {
 			this.editingTask = task;
-			this.text = task.text;
-			this.dueDate = task.dueDate;
-			this.timeToComplete = task.timeToComplete;
+			this.task.text = task.text;
+			this.task.dueDate = task.dueDate;
+			this.task.timeToComplete = task.timeToComplete;
 
 			this.isModalActive = true;
 		},

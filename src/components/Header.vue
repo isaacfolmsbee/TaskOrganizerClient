@@ -1,13 +1,20 @@
 <template>
 	<div class="header-wrapper">
+		<Modal 
+			:isActive="isModalActive" 
+			:activeModal="activeModal"
+			:user="user"
+			@loginUser="loginUser($event)"
+			@registerUser="registerUser($event)"
+			@closeModal="closeModal()" />
 		<div class="theme-selector">
 		</div>
 		<div class="title">
 			<a href="/">Task Organizer</a>
 		</div>
 		<div class="links" v-if="!this.authtoken">
-			<a href="/login">Login</a>
-			<a href="/register">Register</a>
+			<a @click="openLoginModal()">Login</a>
+			<a @click="openRegisterModal()">Register</a>
 		</div>
 		<div class="links" v-else>
 			<a @click="logout()">Logout</a>
@@ -16,10 +23,23 @@
 </template>
 
 <script>
+import UserHandler from '../UserHandler'
+import Modal from './Modal'
+
 export default {
 	name: "Header",
+	components: {
+		Modal,
+	},
 	data() {
 		return {
+			user: {
+				email: '',
+				password: '',
+				confirmpassword: '',
+			},
+			isModalActive: false,
+			activeModal: 'login',
 			authtoken: '',
 		}
 	},
@@ -27,12 +47,54 @@ export default {
 		this.authtoken = sessionStorage.getItem('authtoken');
 	},
 	methods: {
+		openLoginModal() {
+			this.isModalActive = true;
+			this.activeModal = 'login';
+		},
+		openRegisterModal() {
+			this.isModalActive = true;
+			this.activeModal = 'register';
+		},
+		async loginUser(user) {
+			const response = await UserHandler.loginUser(user.email, user.password);
+
+			sessionStorage.setItem('authtoken', response.data);
+
+			if (response.status == 202) {
+				window.location.href = "/";
+			}
+			else {
+				//this.info = response.data;
+			}
+		},
+		async registerUser(user) {
+			if (user.password === user.confirmpassword) {
+				const response = await UserHandler.registerUser(user.email, user.password);
+				//this.info = response.data;
+
+				if (response.status == 201) {
+					this.user.password = '';
+					this.user.confirmpassword = '';
+					this.activeModal = 'login';
+				}
+			} else {
+				//this.info = "Passwords don't match";
+			}
+		},
 		logout() {
 			sessionStorage.removeItem('authtoken');
 			window.location.href = '/';
 		},
 		home() {
 			window.location.href = '/';
+		},
+		closeModal() {
+			this.user = {
+				email: '',
+				password: '',
+				confirmpassword: '',
+			};
+			this.isModalActive = false;
 		}
 	},
 }

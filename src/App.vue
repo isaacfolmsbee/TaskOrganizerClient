@@ -3,19 +3,21 @@
 		<Header />
 		<!-- <Notice /> -->
 		<div class="body-wrapper">
-			<router-view></router-view>
+			<Tasks />
 		</div>
 	</div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
+import Header from './components/Header';
+import Tasks from './components/Tasks';
 // import Notice from './components/Notice.vue'
 
 export default {
 	name: 'App',
 	components: {
 		Header,
+		Tasks,
 		// Notice
 	}
 }
