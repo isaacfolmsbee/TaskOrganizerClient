@@ -257,6 +257,16 @@ export default {
 	cursor: pointer;
 }
 
+.modal-body .dateField {
+	width: 10rem;
+	display: flex;
+	justify-content: center;
+}
+
+.modal-body .dateField input {
+	width: 2.85rem;
+}
+
 .modal-body .timeSelector {
 	display: inline;
 }
