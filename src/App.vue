@@ -10,7 +10,7 @@
 
 <script>
 import Header from './components/Header';
-import Tasks from './components/Tasks';
+import Tasks from './components/Task/Main';
 // import Notice from './components/Notice.vue'
 
 export default {

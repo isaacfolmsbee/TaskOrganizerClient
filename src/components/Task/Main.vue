@@ -58,8 +58,8 @@
 </template>
 
 <script>
-import TaskHandler from '../TaskHandler'
-import Modal from './Modal'
+import TaskHandler from '../../TaskHandler'
+import Modal from '../Modal'
 import Task from './Task'
 
 export default {
