@@ -26,10 +26,20 @@
 					@click="registerUser()">Register</button>
 			</template>
 			<template v-else-if="localModalTemplate === 'task'">
-				<input type="text" v-model="task.text" placeholder="Task Name...">
-				<input type="text" v-model="task.dueDate" placeholder="Date...">
-				<input type="text" v-model="task.timeToComplete" placeholder="Time...">
-				<button @click="$emit('createTask', task)">Submit Task</button>
+				<input type="text" v-model="localTask.text" placeholder="Task Description...">
+				<div class="dateField">
+					<input type="text" v-model="date.year" placeholder="YYYY">
+					<input type="text" v-model="date.month" placeholder="MM">
+					<input type="text" v-model="date.day" placeholder="DD">
+				</div>
+				<div class="timeSelector">
+					<input type="text" v-model="localTimeToComplete" placeholder="Time...">
+					<select v-model="timeFormat">
+						<option value="minutes">Minutes</option>
+						<option value="hours">Hours</option>
+					</select>
+				</div>
+				<button @click="$emit('createTask', localTask)">Submit Task</button>
 			</template>
 			<template v-else-if="localModalTemplate === 'category'">
 				<input type="text" v-model="category" placeholder="Category Name...">
@@ -83,7 +93,56 @@ export default {
 				password: '',
 				confirmPassword: '',
 			},
+			localTask: {
+				text: this.task?.text,
+				dueDate: '',
+				timeToComplete: 0,
+			},
+			date: {
+				year: new Date().getFullYear(),
+				month: new Date().getMonth() + 1,
+				day: new Date().getDate(),
+			},
+			localTimeToComplete: null,
+			timeFormat: 'hours',
 			category: '',
+		}
+	},
+	created() {
+		this.localTask.dueDate = new Date(this.date.year, this.date.month - 1, this.date.day);
+
+		if (this.task?.timeToComplete) {
+			if (this.task.timeToComplete % 60 === 0) {
+				this.localTimeToComplete = this.task.timeToComplete / 60;
+			} else {
+				this.localTimeToComplete = this.task.timeToComplete;
+				this.timeFormat = 'minutes';
+			}
+		}
+		if (this.task?.dueDate) {
+			this.date = {
+				year: new Date(this.task.dueDate).getFullYear(),
+				month: new Date(this.task.dueDate).getMonth() + 1,
+				day: new Date(this.task.dueDate).getDate(),
+			};
+		}
+	},
+	watch: {
+		localTimeToComplete: function() {
+			this.localTask.timeToComplete = this.timeFormat === 'hours' ?
+				this.localTimeToComplete * 60:
+				+this.localTimeToComplete;
+		},
+		timeFormat: function() {
+			this.localTask.timeToComplete = this.timeFormat === 'hours' ?
+				this.localTimeToComplete * 60:
+				+this.localTimeToComplete;
+		},
+		date: {
+			handler() {
+				this.localTask.dueDate = new Date(this.date.year, this.date.month - 1, this.date.day);
+			},
+			deep: true,
 		}
 	},
 	methods: {
@@ -143,8 +202,9 @@ export default {
 
 .modal-body {
 	position: relative;
-	width: 15rem;
+	width: fit-content;
 	margin: 17.5vh auto 0 auto;
+	padding: 0 1.5rem;
 	height: fit-content;
 	background-color: #ffffff;
 	border-radius: 25px;
@@ -182,6 +242,8 @@ export default {
 }
 
 .modal-body input {
+	width: 10rem;
+	height: 1.5rem;
 	margin-top: 0.75rem;
 }
 
@@ -194,4 +256,18 @@ export default {
 	font-family: 'Rubik', sans-serif;
 	cursor: pointer;
 }
+
+.modal-body .timeSelector {
+	display: inline;
+}
+
+.modal-body .timeSelector input {
+	width: 6rem;
+}
+
+.modal-body .timeSelector select {
+	height: 1.5rem;
+	width: 4rem;
+}
+
 </style>

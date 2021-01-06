@@ -1,7 +1,7 @@
 <template>
 	<div v-if="authtoken">
 		<Modal v-if="modal.activeModal == 'task' && modal.isActive" 
-			:modalTemplate="modal.activeModal"
+			:modalTemplate="'task'"
 			:title="`Task - ${selectedCategory}`"
 			:notice="modal.notice"
 			:task="task"
@@ -9,10 +9,10 @@
 			@closeModal="closeModal()" />
 
 		<Modal v-if="modal.activeModal == 'category' && modal.isActive" 
-			:modalTemplate="modal.activeModal" 
+			:modalTemplate="'category'" 
 			:title="'Add Cateogry'"
 			:notice="modal.notice"
-			:category="task"
+			
 			@createCategory="createCategory($event)"
 			@closeModal="closeModal()" />
 		

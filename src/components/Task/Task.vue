@@ -3,8 +3,8 @@
 		:class="{ deleted: task.isDeleted }">
 
 		<div class="task-datetime">
-			<p>Due: {{ task.dueDate }}</p>
-			<p>{{ task.timeToComplete }}</p>
+			<p>Due: {{ refinedDate }}</p>
+			<p>{{ refinedTime }}</p>
 		</div>
 		<div class="task-desc">
 			<h1>{{ task.text }}</h1>
@@ -43,6 +43,32 @@ export default {
 				required: true,
 			},
 		},
+	},
+	computed: {
+		refinedTime() {
+			//determine hours or minutes
+			if (this.task.timeToComplete % 60 === 0) {
+				return this.task.timeToComplete / 60 === 1 ?
+					"1 hour":
+					`${this.task.timeToComplete / 60} hours`;
+			}
+			return this.task.timeToComplete === 1 ?
+				"1 minute":
+				`${this.task.timeToComplete} minutes`;
+		},
+		refinedDate() {
+			var passedDate = new Date(this.task.dueDate),
+				month = '' + (passedDate.getMonth() + 1),
+				day = '' + passedDate.getDate(),
+				year = passedDate.getFullYear();
+
+			if (month.length < 2) 
+				month = '0' + month;
+			if (day.length < 2) 
+				day = '0' + day;
+
+			return [year, month, day].join('-');
+		}
 	}
 }
 </script>

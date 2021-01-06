@@ -27,17 +27,12 @@ export default {
 	name: "TabBar",
 	props: {
 		categories: {
-			type: Array,
+			type: Object,
 			required: true,
 		},
 		selectedCategory: {
 			type: String,
 			required: true,
-		}
-	},
-	data() {
-		return {
-			
 		}
 	},
 	methods: {
