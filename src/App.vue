@@ -48,7 +48,7 @@ body {
 	height: 32rem;
 	flex: 1;
 	margin: 0 auto;
-	border-radius: 50px;
+	border-radius: 30px;
 	background-color: #C4C4C4;
 }
 </style>

@@ -52,21 +52,22 @@ export default {
 	align-items: center;
 	justify-content: center;
 	font-size: 0.65em;
+	transition: 450ms;
 }
 
-.task-tab div.category {
+.task-tab .category {
 	padding: 0.225rem 0.5rem;
-	border-radius: 50px;
+	border-radius: 15px;
 	margin: 0 0.25rem;
 	background-color: #6C6C6C;
 }
 
-.task-tab div.category h1 {
+.task-tab .category h1 {
 	display: inline-block;
 	cursor: pointer;
 }
 
-.task-tab div.selected {
+.task-tab .selected {
 	color: #f8f8f8;
 }
 </style>

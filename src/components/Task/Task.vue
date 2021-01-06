@@ -76,7 +76,7 @@ export default {
 .task-wrapper {
 	width: 87.5%;
 	height: 4rem;
-	border-radius: 50px;
+	border-radius: 18px;
 	margin: 0.35rem auto 0 auto;
 	display: grid;
 	grid-template-columns: 9fr 1fr;
@@ -106,6 +106,7 @@ export default {
 .task-datetime p {
 	display: inline;
 	width: 50%;
+	color: #222222;
 }
 
 .task-datetime p:first-child {
@@ -142,5 +143,11 @@ export default {
 .task-buttons h4 {
 	margin: auto 0;
 	cursor: pointer;
+	color: #222222;
+	transition: color 400ms;
+}
+
+.task-buttons h4:hover {
+	color: #000000;
 }
 </style>

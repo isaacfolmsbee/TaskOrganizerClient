@@ -82,7 +82,7 @@ export default {
 	height: 100px;
 	margin: 20px auto 20px auto;
 	background-color: #C4C4C4;
-	border-radius: 50px;
+	border-radius: 25px;
 	display: grid;
 	grid-template-columns: 1fr 2fr 1fr;
 }
@@ -113,9 +113,17 @@ export default {
 
 .links a {
 	margin: 0.1em 0;
+	padding: 0.15rem 0.25rem;
+	border-radius: 10px;
 	font-size: 0.95em;
 	text-decoration: none;
 	color: #000000;
 	font-weight: 500;
+	cursor: pointer;
+	transition: 400ms;
+}
+
+.links a:hover {
+	background-color: #6C6C6C;
 }
 </style>

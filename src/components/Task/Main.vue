@@ -35,8 +35,11 @@
 				@deleteTask="deleteTask($event)" />
 		</div>
 	</div>
-	<div v-else>
-		<h1 class="notice">Please login to use website</h1>
+	<div v-else class="notice">
+		<h1>- Please login to use website -</h1>
+		<h3>Curious on how this website works?</h3>
+		<p>You can create categories to hold tasks and each task has a description, due date, and estimated time of completion.</p>
+		<p>The tasks are automatically organized by due date and then how long they'll take to complete.</p>
 	</div>
 </template>
 
@@ -76,11 +79,13 @@ export default {
 	},
 	async created() {
 		this.authtoken = sessionStorage.getItem('authtoken');
-		this.categories = await TaskHandler.getCategories(this.authtoken);
+		if (this.authtoken) {
+			this.categories = await TaskHandler.getCategories(this.authtoken);
 
-		//set this.tasks to the first category of tasks in categories
-		this.tasks = this.categories[Object.keys(this.categories)[0]];
-		this.selectedCategory = Object.keys(this.categories)[0];
+			//set this.tasks to the first category of tasks in categories
+			this.tasks = this.categories[Object.keys(this.categories)[0]];
+			this.selectedCategory = Object.keys(this.categories)[0];	
+		}
 	},
 	methods: {
 		setTasks(category) {
@@ -195,5 +200,12 @@ export default {
 	background-color: #C4C4C4;
 	border-radius: 15px;
 	border: 3px solid #6C6C6C;
+}
+
+.notice {
+	margin: 0 auto;
+	padding-top: 0.5rem;
+	width: 80%;
+	text-align: center;
 }
 </style>
