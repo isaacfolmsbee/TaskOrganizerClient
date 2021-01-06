@@ -1,11 +1,9 @@
 <template>
 	<div class="header-wrapper">
 		<Modal 
-			:isActive="isModalActive" 
-			:activeModal="activeModal"
-			:user="user"
-			@loginUser="loginUser($event)"
-			@registerUser="registerUser($event)"
+			v-if="modal.isActive" 
+			:modalTemplate="modal.activeModal"
+			:title="modal.title"
 			@closeModal="closeModal()" />
 		<div class="theme-selector">
 		</div>
@@ -23,7 +21,6 @@
 </template>
 
 <script>
-import UserHandler from '../UserHandler'
 import Modal from './Modal'
 
 export default {
@@ -38,8 +35,11 @@ export default {
 				password: '',
 				confirmpassword: '',
 			},
-			isModalActive: false,
-			activeModal: 'login',
+			modal: {
+				isActive: false,
+				activeModal: 'login',
+				title: 'Login',
+			},
 			authtoken: '',
 		}
 	},
@@ -48,38 +48,14 @@ export default {
 	},
 	methods: {
 		openLoginModal() {
-			this.isModalActive = true;
-			this.activeModal = 'login';
+			this.modal.title = 'Login';
+			this.modal.activeModal = 'login';
+			this.modal.isActive = true;
 		},
 		openRegisterModal() {
-			this.isModalActive = true;
-			this.activeModal = 'register';
-		},
-		async loginUser(user) {
-			const response = await UserHandler.loginUser(user.email, user.password);
-
-			sessionStorage.setItem('authtoken', response.data);
-
-			if (response.status == 202) {
-				window.location.href = "/";
-			}
-			else {
-				//this.info = response.data;
-			}
-		},
-		async registerUser(user) {
-			if (user.password === user.confirmpassword) {
-				const response = await UserHandler.registerUser(user.email, user.password);
-				//this.info = response.data;
-
-				if (response.status == 201) {
-					this.user.password = '';
-					this.user.confirmpassword = '';
-					this.activeModal = 'login';
-				}
-			} else {
-				//this.info = "Passwords don't match";
-			}
+			this.modal.title = 'Register';
+			this.modal.activeModal = 'register';
+			this.modal.isActive = true;
 		},
 		logout() {
 			sessionStorage.removeItem('authtoken');
@@ -94,7 +70,7 @@ export default {
 				password: '',
 				confirmpassword: '',
 			};
-			this.isModalActive = false;
+			this.modal.isActive = false;
 		}
 	},
 }

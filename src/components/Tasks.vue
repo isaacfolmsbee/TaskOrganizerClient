@@ -1,13 +1,21 @@
 <template>
 	<div v-if="authtoken">
-		<Modal 
-			:isActive="isModalActive" 
-			:activeModal="activeModal" 
+		<Modal v-if="activeModal == 'task' && isModalActive" 
+			:modalTemplate="activeModal"
+			:title="`Task - ${selectedCategory}`"
+			:notice="modalNotice"
 			:task="task"
-			:category="selectedCategory"
 			@createTask="createTask($event)"
+			@closeModal="closeModal()" />
+
+		<Modal v-if="activeModal == 'category' && isModalActive" 
+			:modalTemplate="activeModal" 
+			:title="'Add Cateogry'"
+			:notice="modalNotice"
+			:category="task"
 			@createCategory="createCategory($event)"
 			@closeModal="closeModal()" />
+		
 		<div class="task-tab">
 			<div class="category"
 				v-for="(category, name) in categories"
@@ -36,23 +44,12 @@
 		</div>
 
 		<div class="task-list">
-			<div class="task-wrapper"
+			<Task 
 				v-for="task in tasks"
 				:key="task._id"
-				:class="{ deleted: task.isDeleted }"
-			>
-				<div class="task-datetime">
-					<p>Due: {{ task.dueDate }}</p>
-					<p>{{ task.timeToComplete }}</p>
-				</div>
-				<div class="task-desc">
-					<h1>{{ task.text }}</h1>
-				</div>
-				<div class="task-buttons">
-					<h4 @click="editTask(task)">Edit</h4>
-					<h4 @click="deleteTask(task)">Delete</h4>
-				</div>
-			</div>
+				:task="task" 
+				@editTask="editTask($event)"
+				@deleteTask="deleteTask($event)" />
 		</div>
 	</div>
 	<div v-else>
@@ -63,11 +60,13 @@
 <script>
 import TaskHandler from '../TaskHandler'
 import Modal from './Modal'
+import Task from './Task'
 
 export default {
 	name: 'Tasks',
 	components: {
 		Modal,
+		Task,
 	},
 	data() {
 		return {
@@ -82,7 +81,8 @@ export default {
 			authtoken: '',
 			isModalActive: false,
 			activeModal: 'task',
-			editingTask: null
+			modalNotice: '',
+			editingTask: null,
 		}
 	},
 	async created() {
@@ -119,15 +119,19 @@ export default {
 				await this.deleteTask(this.editingTask);
 				this.editingTask = null;
 			}
-			await TaskHandler.insertTask(
+			const response = await TaskHandler.insertTask(
 				this.selectedCategory, task.text, task.dueDate, task.timeToComplete, this.authtoken);
 
-			this.categories = await TaskHandler.getCategories(this.authtoken);
-			this.tasks = this.categories[this.selectedCategory];
-			this.task.text = '';
-			this.task.dueDate = '';
-			this.task.timeToComplete = '';
-			this.isModalActive = false;
+			if (response.data) {
+				this.modalNotice = response.data;
+			} else {
+				this.categories = await TaskHandler.getCategories(this.authtoken);
+				this.tasks = this.categories[this.selectedCategory];
+				this.task.text = '';
+				this.task.dueDate = '';
+				this.task.timeToComplete = '';
+				this.isModalActive = false;
+			}
 		},
 		async deleteTask(task) {
 			if (!this.editingTask) {
@@ -158,9 +162,12 @@ export default {
 			this.isModalActive = false;
 			this.activeModal = 'task';
 			this.editingTask = null;
-			this.text = '';
-			this.dueDate = '';
-			this.timeToComplete = '';
+			this.task = {
+				text: '',
+				dueDate: '',
+				timeToComplete: '',
+			};
+			this.modalNotice = null;
 		}
 	},
 }
@@ -249,133 +256,5 @@ export default {
 	background-color: #C4C4C4;
 	border-radius: 15px;
 	border: 3px solid #6C6C6C;
-}
-
-.task-wrapper {
-	width: 87.5%;
-	height: 4rem;
-	border-radius: 50px;
-	margin: 0.35rem auto 0 auto;
-	display: grid;
-	grid-template-columns: 9fr 1fr;
-	grid-template-rows: 1fr 3fr;
-	background-color: #6C6C6C;
-	
-}
-
-.task-wrapper:last-child {
-	margin-bottom: 0.35rem;
-}
-
-.task-wrapper.deleted {
-	background-color: #c33737;
-	transition: 350ms;
-}
-
-.task-datetime {
-	grid-column: 1/2;
-	display: flex;
-
-	/* To center based on task-wrapper */
-	margin-left: 12.5%;
-}
-
-.task-datetime p {
-	display: inline;
-	width: 50%;
-}
-
-.task-datetime p:first-child {
-	text-align: right;
-	margin-right: 0.75rem;
-}
-
-.task-datetime p:last-child {
-	margin-left: 0.75rem;
-}
-
-.task-desc {
-	grid-column: 1/2;
-	grid-row: 2/3;
-	margin-left: 1.25rem;
-	text-align: center;
-}
-
-.task-desc h1 {
-	font-size: 1.15rem;
-}
-
-.task-buttons {
-	/* Unneeded? */
-	grid-column: 2/3;
-	grid-row: 1/3;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin: 0.5rem 0;
-	/*  */
-}
-
-.task-buttons h4 {
-	margin: auto 0;
-}
-
-/* Modal CSS */
-.modal-bg {
-	position: fixed;
-	width: 100%;
-	height: 100vh;
-	top: 0;
-	left: 0;
-	background-color: rgba(0, 0, 0, 0.45);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	visibility: hidden;
-	opacity: 0;
-	transition: visibility 0s, opacity 450ms;
-}
-
-.modal-bg.active {
-	visibility: visible;
-	opacity: 1;
-}
-
-.task-modal {
-	position: relative;
-	width: 20rem;
-	height: 15rem;
-	background-color: #ffffff;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	flex-direction: column;
-}
-
-.category-modal {
-	position: relative;
-	width: 18rem;
-	height: 10rem;
-	background-color: #ffffff;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	flex-direction: column;
-}
-
-.modal-close {
-	position: absolute;
-	top: 0.25rem;
-	right: 0.25rem;
-	cursor: pointer;
-}
-
-.modal button {
-	padding: 0.25rem 0.4rem;
-	background-color: #C4C4C4;
-	border: none;
-	border-radius: 25px;
-	font-family: 'Rubik', sans-serif;
-	cursor: pointer;
 }
 </style>
