@@ -1,47 +1,30 @@
 <template>
 	<div v-if="authtoken">
-		<Modal v-if="activeModal == 'task' && isModalActive" 
-			:modalTemplate="activeModal"
+		<Modal v-if="modal.activeModal == 'task' && modal.isActive" 
+			:modalTemplate="modal.activeModal"
 			:title="`Task - ${selectedCategory}`"
-			:notice="modalNotice"
+			:notice="modal.notice"
 			:task="task"
 			@createTask="createTask($event)"
 			@closeModal="closeModal()" />
 
-		<Modal v-if="activeModal == 'category' && isModalActive" 
-			:modalTemplate="activeModal" 
+		<Modal v-if="modal.activeModal == 'category' && modal.isActive" 
+			:modalTemplate="modal.activeModal" 
 			:title="'Add Cateogry'"
-			:notice="modalNotice"
+			:notice="modal.notice"
 			:category="task"
 			@createCategory="createCategory($event)"
 			@closeModal="closeModal()" />
 		
-		<div class="task-tab">
-			<div class="category"
-				v-for="(category, name) in categories"
-				:key="name"
-				:class="{ selected: isSelected(name) }">
+		<TabBar 
+			:categories="categories"
+			:selectedCategory="selectedCategory"
+			@setTasks="setTasks($event)"
+			@deleteCategory="deleteCategory()"
+			@openCategoryModal="openCategoryModal()" />
 
-				<h1 @click="setTasks(name)">
-					{{ name }}
-				</h1>
-				<h1 
-					v-if="name == selectedCategory"
-					@click="deleteCategory()"
-					style="margin-left: 0.4rem; color: #c33737">
-					-
-				</h1>
-			</div>
-			<div class="category">
-				<h1 @click="openCategoryModal()">+</h1>
-			</div>
-		</div>
-
-		<div class="add-task">
-			<hr>
-				<h4 @click="isModalActive = true">Add Task</h4>
-			<hr>
-		</div>
+		<AddTask v-if="selectedCategory"
+			@addTask="openTaskModal()"/>
 
 		<div class="task-list">
 			<Task 
@@ -58,14 +41,18 @@
 </template>
 
 <script>
-import TaskHandler from '../../TaskHandler'
-import Modal from '../Modal'
-import Task from './Task'
+import TaskHandler from '../../TaskHandler';
+import Modal from '../Modal';
+import TabBar from './TabBar';
+import AddTask from './AddTask';
+import Task from './Task';
 
 export default {
 	name: 'Tasks',
 	components: {
 		Modal,
+		TabBar,
+		AddTask,
 		Task,
 	},
 	data() {
@@ -73,16 +60,18 @@ export default {
 			categories: {},
 			selectedCategory: '',
 			tasks: [],
+			editingTask: null,
 			task: {
 				text: '',
 				dueDate: '',
 				timeToComplete: '',
 			},
+			modal: {
+				isActive: false,
+				activeModal: '',
+				notice: '',
+			},
 			authtoken: '',
-			isModalActive: false,
-			activeModal: 'task',
-			modalNotice: '',
-			editingTask: null,
 		}
 	},
 	async created() {
@@ -102,7 +91,11 @@ export default {
 			await TaskHandler.insertCategory(text, this.authtoken);
 			this.categories = await TaskHandler.getCategories(this.authtoken);
 
-			this.isModalActive = false
+			if (!this.selectedCategory) {
+				this.selectedCategory = Object.keys(this.categories)[0];
+			}
+
+			this.modal.isActive = false
 			this.activeModal = 'task';
 			this.task.text = '';
 		},
@@ -123,112 +116,58 @@ export default {
 				this.selectedCategory, task.text, task.dueDate, task.timeToComplete, this.authtoken);
 
 			if (response.data) {
-				this.modalNotice = response.data;
+				this.modal.notice = response.data;
 			} else {
 				this.categories = await TaskHandler.getCategories(this.authtoken);
 				this.tasks = this.categories[this.selectedCategory];
-				this.task.text = '';
-				this.task.dueDate = '';
-				this.task.timeToComplete = '';
-				this.isModalActive = false;
+				this.task = {
+					text: '',
+					dueDate: '',
+					timeToComplete: '',
+				};
+				this.modal.isActive = false;
 			}
 		},
 		async deleteTask(task) {
+			await TaskHandler.deleteTask(this.selectedCategory, task._id, this.authtoken);
+
 			if (!this.editingTask) {
 				task.isDeleted = true;
 				await new Promise(r => setTimeout(r, 350));
 			}
-
-			await TaskHandler.deleteTask(this.selectedCategory, task._id, this.authtoken);
+			
 			this.categories = await TaskHandler.getCategories(this.authtoken);
 			this.tasks = this.categories[this.selectedCategory];
 		},
 		async editTask(task) {
 			this.editingTask = task;
-			this.task.text = task.text;
-			this.task.dueDate = task.dueDate;
-			this.task.timeToComplete = task.timeToComplete;
+			this.task = task;
 
-			this.isModalActive = true;
+			this.modal.isActive = true;
 		},
-		isSelected(name) {
-			return name == this.selectedCategory;
+		openTaskModal() {
+			this.modal.activeModal = 'task';
+			this.modal.isActive = true;
 		},
 		openCategoryModal() {
-			this.isModalActive = true;
-			this.activeModal = 'category';
+			this.modal.activeModal = 'category';
+			this.modal.isActive = true;
 		},
 		closeModal() {
-			this.isModalActive = false;
-			this.activeModal = 'task';
+			this.modal.isActive = false;
 			this.editingTask = null;
 			this.task = {
 				text: '',
 				dueDate: '',
 				timeToComplete: '',
 			};
-			this.modalNotice = null;
+			this.modal.notice = null;
 		}
 	},
 }
 </script>
 
 <style scoped>
-.task-tab {
-	width: 87.5%;
-	height: 2.5rem;
-	margin: 0 auto;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 0.65em;
-}
-
-.task-tab div.category {
-	padding: 0.225rem 0.5rem;
-	border-radius: 50px;
-	margin: 0 0.25rem;
-	background-color: #6C6C6C;
-}
-
-.task-tab div.category h1 {
-	display: inline-block;
-	cursor: pointer;
-}
-
-.task-tab div.selected {
-	color: #f8f8f8;
-}
-
-/* Add Task CSS */
-
-.add-task {
-	width: 100%;
-	height: 0.75rem;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.add-task h4 {
-	padding: 0.1rem 0.2rem;
-	font-size: 0.65rem;
-	background-color: #6C6C6C;
-	border-radius: 10px;
-	cursor: pointer;
-}
-
-.add-task hr {
-	width: 42.5%;
-	height: 0.2rem;
-	margin: 0 0.5rem;
-	background-color: #6C6C6C;
-	border: 1.5px solid #6C6C6C;
-	border-radius: 10px;
-}
-
-/* Task CSS */
-
 .task-list {
 	width: 92.5%;
 	height: 28.46rem;
