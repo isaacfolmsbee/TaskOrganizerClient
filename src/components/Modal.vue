@@ -216,6 +216,8 @@ export default {
 
 .modal-body #title {
 	margin: 0.5rem;
+	cursor: default;
+	user-select: none;
 }
 
 #modal-close {
@@ -242,29 +244,48 @@ export default {
 }
 
 .modal-body input {
-	width: 10rem;
+	width: 9.8rem;
 	height: 1.5rem;
 	margin-top: 0.75rem;
+	border: 0.1rem #000000;
+	border-style: none none solid none;
+	padding-left: 0.2rem;
+	transition: 400ms;
+}
+
+.modal-body input:focus {
+	background-color: #dfdfdf;
+}
+
+.modal-body select {
+	background-color: #C4C4C4;
+	border: none;
 }
 
 .modal-body button {
 	padding: 0.35rem 0.45rem;
 	margin: 0.5rem 0;
 	background-color: #C4C4C4;
+	color: #494949;
 	border: none;
 	border-radius: 25px;
 	font-family: 'Rubik', sans-serif;
 	cursor: pointer;
+	transition: 400ms;
+}
+
+.modal-body button:hover {
+	color: #000000;
 }
 
 .modal-body .dateField {
 	width: 10rem;
 	display: flex;
-	justify-content: center;
+	justify-content: space-around;
 }
 
 .modal-body .dateField input {
-	width: 2.85rem;
+	width: 3rem;
 }
 
 .modal-body .timeSelector {
