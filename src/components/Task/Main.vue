@@ -93,16 +93,21 @@ export default {
 			this.selectedCategory = category;
 		},
 		async createCategory(text) {
-			await TaskHandler.insertCategory(text, this.authtoken);
-			this.categories = await TaskHandler.getCategories(this.authtoken);
+			try {
+				await TaskHandler.insertCategory(text.trim(), this.authtoken);
+				this.categories = await TaskHandler.getCategories(this.authtoken);
 
-			if (!this.selectedCategory) {
-				this.selectedCategory = Object.keys(this.categories)[0];
+				if (!this.selectedCategory) {
+					this.selectedCategory = Object.keys(this.categories)[0];
+				}
+
+				this.modal.isActive = false
+				this.activeModal = 'task';
+				this.task.text = '';
+
+			} catch (error) {
+				this.modal.notice = error.response.data;
 			}
-
-			this.modal.isActive = false
-			this.activeModal = 'task';
-			this.task.text = '';
 		},
 		async deleteCategory() {
 			await TaskHandler.deleteCategory(this.selectedCategory, this.authtoken);
@@ -117,30 +122,36 @@ export default {
 				await this.deleteTask(this.editingTask);
 				this.editingTask = null;
 			}
-			const response = await TaskHandler.insertTask(
-				this.selectedCategory, task.text, task.dueDate, task.timeToComplete, this.authtoken);
 
-			if (response.data) {
-				this.modal.notice = response.data;
-			} else {
-				this.categories = await TaskHandler.getCategories(this.authtoken);
-				this.tasks = this.categories[this.selectedCategory];
-				this.task = {
-					text: '',
-					dueDate: '',
-					timeToComplete: '',
-				};
-				this.modal.isActive = false;
+			try {
+				await TaskHandler.insertTask(
+					this.selectedCategory,
+					task.text,
+					task.dueDate,
+					task.timeToComplete,
+					this.authtoken);
+
+					this.categories = await TaskHandler.getCategories(this.authtoken);
+					this.tasks = this.categories[this.selectedCategory];
+					this.task = {
+						text: '',
+						dueDate: '',
+						timeToComplete: '',
+					};
+					this.modal.isActive = false;
+					this.modal.notice = '';
+			} catch (error) {
+				this.modal.notice = error.response.data;
 			}
 		},
 		async deleteTask(task) {
 			await TaskHandler.deleteTask(this.selectedCategory, task._id, this.authtoken);
 
 			if (!this.editingTask) {
-				task.isDeleted = true;
-				await new Promise(r => setTimeout(r, 350));
+			task.isDeleted = true;
+			await new Promise(r => setTimeout(r, 350));
 			}
-			
+
 			this.categories = await TaskHandler.getCategories(this.authtoken);
 			this.tasks = this.categories[this.selectedCategory];
 		},
