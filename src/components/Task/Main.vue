@@ -101,8 +101,11 @@ export default {
 					this.selectedCategory = Object.keys(this.categories)[0];
 				}
 
-				this.modal.isActive = false
-				this.activeModal = 'task';
+				this.modal = {
+					isActive: false,
+					activeModal: '',
+					notice: '',
+				};
 				this.task.text = '';
 
 			} catch (error) {
@@ -138,8 +141,11 @@ export default {
 						dueDate: '',
 						timeToComplete: '',
 					};
-					this.modal.isActive = false;
-					this.modal.notice = '';
+					this.modal = {
+						isActive: false,
+						activeModal: '',
+						notice: '',
+					};
 			} catch (error) {
 				this.modal.notice = error.response.data;
 			}
@@ -155,10 +161,11 @@ export default {
 			this.categories = await TaskHandler.getCategories(this.authtoken);
 			this.tasks = this.categories[this.selectedCategory];
 		},
-		async editTask(task) {
+		editTask(task) {
 			this.editingTask = task;
 			this.task = task;
 
+			this.modal.activeModal = 'task';
 			this.modal.isActive = true;
 		},
 		openTaskModal() {
@@ -170,14 +177,17 @@ export default {
 			this.modal.isActive = true;
 		},
 		closeModal() {
-			this.modal.isActive = false;
+			this.modal = {
+				isActive: false,
+				activeModal: '',
+				notice: '',
+			};
 			this.editingTask = null;
 			this.task = {
 				text: '',
 				dueDate: '',
 				timeToComplete: '',
 			};
-			this.modal.notice = null;
 		}
 	},
 }
