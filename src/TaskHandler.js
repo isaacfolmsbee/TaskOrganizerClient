@@ -60,27 +60,20 @@ class TaskHandler {
 
 	// Create Tasks
 	static async insertTask(category, text, dueDate, timeToComplete, jwt) {
-		try {
-			const response = await axios.post(
-				url,
-				{
-					category,
-					text,
-					dueDate,
-					timeToComplete,
+		return await axios.post(
+			url,
+			{
+				category,
+				text,
+				dueDate,
+				timeToComplete,
+			},
+			{
+				headers: {
+					authtoken: jwt,
 				},
-				{
-					headers: {
-						authtoken: jwt,
-					},
-				}
-			);
-
-			return response;
-
-		} catch (error) {
-			return error.response;
-		}
+			}
+		);
 	}
 
 	// Delete Tasks

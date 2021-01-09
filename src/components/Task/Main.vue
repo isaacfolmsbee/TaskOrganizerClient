@@ -120,12 +120,6 @@ export default {
 			this.selectedCategory = Object.keys(this.categories)[0];
 		},
 		async createTask(task) {
-
-			if (this.editingTask) {
-				await this.deleteTask(this.editingTask);
-				this.editingTask = null;
-			}
-
 			try {
 				await TaskHandler.insertTask(
 					this.selectedCategory,
@@ -133,6 +127,11 @@ export default {
 					task.dueDate,
 					task.timeToComplete,
 					this.authtoken);
+
+					if (this.editingTask) {
+						await this.deleteTask(this.editingTask);
+						this.editingTask = null;
+					}
 
 					this.categories = await TaskHandler.getCategories(this.authtoken);
 					this.tasks = this.categories[this.selectedCategory];
