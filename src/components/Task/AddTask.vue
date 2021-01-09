@@ -24,7 +24,7 @@ export default {
 .add-task h4 {
 	padding: 0.1rem 0.2rem;
 	font-size: 0.65rem;
-	background-color: #6C6C6C;
+	background-color: var(--background-tertiary);
 	border-radius: 10px;
 	cursor: pointer;
 }
@@ -33,8 +33,8 @@ export default {
 	width: 42.5%;
 	height: 0.2rem;
 	margin: 0 0.5rem;
-	background-color: #6C6C6C;
-	border: 1.5px solid #6C6C6C;
+	background-color: var(--background-tertiary);
+	border: 1.5px solid var(--background-tertiary);
 	border-radius: 10px;
 }
 </style>

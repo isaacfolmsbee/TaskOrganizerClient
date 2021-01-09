@@ -229,7 +229,7 @@ export default {
 }
 
 #modal-close:hover {
-	color: #992222;
+	color: var(--dark-red);
 }
 
 .modal-body #notice {
@@ -240,7 +240,7 @@ export default {
 	padding: 0.225rem 0.325rem;
 	margin: -0.2rem 0;
 	border-radius: 15px;
-	background-color: #c33737;
+	background-color: var(--light-red);
 }
 
 .modal-body input {

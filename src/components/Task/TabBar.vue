@@ -11,7 +11,7 @@
 			<h1 
 				v-if="name == selectedCategory"
 				@click="$emit('deleteCategory')"
-				style="margin-left: 0.4rem; color: #c33737">
+				style="margin-left: 0.4rem; color: var(--light-red)">
 				-
 			</h1>
 		</div>
@@ -59,7 +59,7 @@ export default {
 	padding: 0.225rem 0.5rem;
 	border-radius: 15px;
 	margin: 0 0.25rem;
-	background-color: #6C6C6C;
+	background-color: var(--background-tertiary);
 }
 
 .task-tab .category h1 {

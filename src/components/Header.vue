@@ -6,6 +6,9 @@
 			:title="modal.title"
 			@closeModal="closeModal()" />
 		<div class="theme-selector">
+			<img src="moon.svg" alt="Moon icon for website theme selection"
+				:class="{ white: lightTheme }"
+				@click="$emit('changeTheme')" >
 		</div>
 		<div class="title">
 			<a href="/">Task Organizer</a>
@@ -27,6 +30,12 @@ export default {
 	name: "Header",
 	components: {
 		Modal,
+	},
+	props: {
+		lightTheme: {
+			type: Boolean,
+			required: true,
+		}
 	},
 	data() {
 		return {
@@ -81,15 +90,28 @@ export default {
 	width: 60rem;
 	height: 100px;
 	margin: 20px auto 20px auto;
-	background-color: #C4C4C4;
+	background-color: var(--background-secondary);
 	border-radius: 25px;
 	display: grid;
 	grid-template-columns: 1fr 2fr 1fr;
 }
 
-/* .theme-selector {
-	Fill in later
-} */
+.theme-selector {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.theme-selector img {
+	width: 1.45rem;
+	height: 1.45rem;
+	cursor: pointer;
+	transition: 400ms;
+}
+
+.white {
+	filter: invert(100%);
+}
 
 .title {
 	display: flex;
@@ -100,7 +122,7 @@ export default {
 .title a {
 	font-size: 2.25em;
 	text-decoration: none;
-	color: #000000;
+	color: var(--text);
 	font-weight: 700;
 }
 
@@ -117,13 +139,13 @@ export default {
 	border-radius: 10px;
 	font-size: 0.95em;
 	text-decoration: none;
-	color: #000000;
+	color: var(--text);
 	font-weight: 500;
 	cursor: pointer;
 	transition: 400ms;
 }
 
 .links a:hover {
-	background-color: #6C6C6C;
+	background-color: var(--background-tertiary);
 }
 </style>

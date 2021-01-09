@@ -81,7 +81,7 @@ export default {
 	display: grid;
 	grid-template-columns: 9fr 1fr;
 	grid-template-rows: 1fr 3fr;
-	background-color: #6C6C6C;
+	background-color: var(--background-tertiary);
 	cursor: default;
 	
 }
@@ -91,7 +91,7 @@ export default {
 }
 
 .task-wrapper.deleted {
-	background-color: #c33737;
+	background-color: var(--light-red);
 	transition: 350ms;
 }
 
@@ -106,7 +106,7 @@ export default {
 .task-datetime p {
 	display: inline;
 	width: 50%;
-	color: #222222;
+	color: var(--text-secondary);
 }
 
 .task-datetime p:first-child {
@@ -143,11 +143,11 @@ export default {
 .task-buttons h4 {
 	margin: auto 0;
 	cursor: pointer;
-	color: #222222;
+	color: var(--text-secondary);
 	transition: color 400ms;
 }
 
 .task-buttons h4:hover {
-	color: #000000;
+	color: var(--text);
 }
 </style>

@@ -194,7 +194,7 @@ export default {
 /* Firefox scroll-bar */
 .task-list {
 	scrollbar-width: 0.5rem;
-	scrollbar-color: #000000 #6C6C6C;
+	scrollbar-color: var(--border-color) var(--background-tertiary);
 }
 
 /* Chrome, Edge, and Safari scroll-bar */
@@ -203,14 +203,14 @@ export default {
 }
 
 .task-list::-webkit-scrollbar-track {
-	background: #6C6C6C;
+	background: var(--background-tertiary);
 	border-radius: 15px;
 }
 
 .task-list::-webkit-scrollbar-thumb {
-	background-color: #C4C4C4;
+	background-color: var(--background-secondary);
 	border-radius: 15px;
-	border: 3px solid #6C6C6C;
+	border: 3px solid var(--background-tertiary);
 }
 
 .notice {
