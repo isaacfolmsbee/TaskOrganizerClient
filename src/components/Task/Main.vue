@@ -165,8 +165,7 @@ export default {
 			this.editingTask = task;
 			this.task = task;
 
-			this.modal.activeModal = 'task';
-			this.modal.isActive = true;
+			this.openTaskModal();
 		},
 		openTaskModal() {
 			this.modal.activeModal = 'task';
@@ -204,23 +203,23 @@ export default {
 /* Firefox scroll-bar */
 .task-list {
 	scrollbar-width: 0.5rem;
-	scrollbar-color: var(--border-color) var(--background-tertiary);
+	scrollbar-color: var(--background) var(--background-secondary-offset);
 }
 
 /* Chrome, Edge, and Safari scroll-bar */
 .task-list::-webkit-scrollbar {
-	width: 0.375rem;
+	width: 0.5rem;
 }
 
 .task-list::-webkit-scrollbar-track {
-	background: var(--background-tertiary);
+	background: var(--background-secondary-offset);
 	border-radius: 15px;
 }
 
 .task-list::-webkit-scrollbar-thumb {
-	background-color: var(--background-secondary);
+	background-color: var(--background);
 	border-radius: 15px;
-	border: 3px solid var(--background-tertiary);
+	border: 3px solid var(--background-secondary-offset);
 }
 
 .notice {
