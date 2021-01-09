@@ -69,7 +69,7 @@ export default {
 	--background-tertiary: #6C6C6C;
 	--dark-red: #992222;
 	--light-red: #c33737;
-	--text: #000000;
+	--text: #dbdbdb;
 	--text-offset: #494949;
 	--text-secondary: #222222;
 	--border-color: #000000;
