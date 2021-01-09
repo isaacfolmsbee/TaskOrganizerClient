@@ -228,5 +228,6 @@ export default {
 	padding-top: 0.5rem;
 	width: 80%;
 	text-align: center;
+	color: var(--text);
 }
 </style>

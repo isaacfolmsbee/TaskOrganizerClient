@@ -146,6 +146,6 @@ export default {
 }
 
 .links a:hover {
-	background-color: var(--background-tertiary);
+	background-color: var(--background-offset);
 }
 </style>

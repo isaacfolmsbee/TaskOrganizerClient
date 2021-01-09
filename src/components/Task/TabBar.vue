@@ -59,15 +59,16 @@ export default {
 	padding: 0.225rem 0.5rem;
 	border-radius: 15px;
 	margin: 0 0.25rem;
-	background-color: var(--background-tertiary);
+	background-color: var(--background-secondary-offset);
 }
 
 .task-tab .category h1 {
 	display: inline-block;
 	cursor: pointer;
+	color: var(--text-secondary);
 }
 
-.task-tab .selected {
-	color: #f8f8f8;
+.task-tab .category.selected h1 {
+	color: var(--text);
 }
 </style>

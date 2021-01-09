@@ -44,13 +44,14 @@ export default {
 	--background: #111111;
 	--background-offset: #202020;
 	--background-secondary: #3b3b3b;
-	--background-tertiary: #939393;
+	--background-secondary-offset: #696969;
 	--dark-red: #992222;
 	--light-red: #c33737;
 	--text: #dadada;
-	--text-offset: #494949;
+	--text-offset: #5d5d5d;
 	--text-secondary: #222222;
-	--border-color: #ffffff;
+	--text-secondary-offset: #000000;
+	--border-color: #000000;
 
 	margin: 0;
 	height: 100vh;
@@ -66,7 +67,7 @@ export default {
 	--background: #ffffff;
 	--background-offset: #dfdfdf;
 	--background-secondary: #C4C4C4;
-	--background-tertiary: #6C6C6C;
+	--background-secondary-offset: #6C6C6C;
 	--dark-red: #992222;
 	--light-red: #c33737;
 	--text: #000000;

@@ -81,7 +81,7 @@ export default {
 	display: grid;
 	grid-template-columns: 9fr 1fr;
 	grid-template-rows: 1fr 3fr;
-	background-color: var(--background-tertiary);
+	background-color: var(--background-secondary-offset);
 	cursor: default;
 	
 }
@@ -148,6 +148,6 @@ export default {
 }
 
 .task-buttons h4:hover {
-	color: var(--text);
+	color: var(--text-secondary-offset);
 }
 </style>
