@@ -2,7 +2,7 @@
 	<div id="app" :class="{ light: lightTheme }">
 		<Header 
 			:lightTheme="lightTheme" 
-			@changeTheme="lightTheme = !lightTheme" />
+			@changeTheme="changeTheme()" />
 		<!-- <Notice /> -->
 		<div class="body-wrapper">
 			<Tasks />
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import UserHandler from './UserHandler';
 import Header from './components/Header';
 import Tasks from './components/Task/Main';
 // import Notice from './components/Notice.vue'
@@ -24,9 +25,24 @@ export default {
 	},
 	data() {
 		return {
-			lightTheme: false,
+			lightTheme: true,
+			authtoken: '',
 		}
 	},
+	async created() {
+		this.authtoken = sessionStorage.getItem('authtoken');
+
+		const response = await UserHandler.getTheme(this.authtoken);
+
+		this.lightTheme = response.data;
+	},
+	methods: {
+		async changeTheme() {
+			this.lightTheme = !this.lightTheme;
+
+			await UserHandler.setTheme(this.lightTheme, this.authtoken);
+		},
+	}
 }
 </script>
 

@@ -10,9 +10,8 @@ class UserHandler {
 				email,
 				password,
 			});
-			
-			return response;
 
+			return response;
 		} catch (error) {
 			return error.response;
 		}
@@ -24,12 +23,33 @@ class UserHandler {
 				email,
 				password,
 			});
-			
-			return response;
 
+			return response;
 		} catch (error) {
 			return error.response;
 		}
+	}
+
+	static async getTheme(jwt) {
+		return await axios.get(url + 'theme', {
+			headers: {
+				authtoken: jwt,
+			},
+		});
+	}
+
+	static async setTheme(lightTheme, jwt) {
+		return await axios.post(
+			url + 'theme',
+			{
+				lightTheme,
+			},
+			{
+				headers: {
+					authtoken: jwt,
+				},
+			}
+		);
 	}
 }
 
