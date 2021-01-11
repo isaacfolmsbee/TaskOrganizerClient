@@ -32,9 +32,10 @@ export default {
 	async created() {
 		this.authtoken = sessionStorage.getItem('authtoken');
 
-		const response = await UserHandler.getTheme(this.authtoken);
-
-		this.lightTheme = response.data;
+		if (this.authtoken) {
+			const response = await UserHandler.getTheme(this.authtoken);
+			this.lightTheme = response.data;	
+		}
 	},
 	methods: {
 		async changeTheme() {
