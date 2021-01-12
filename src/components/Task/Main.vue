@@ -194,7 +194,7 @@ export default {
 <style scoped>
 .task-list {
 	position: absolute;
-	top: 3.45rem;
+	top: 3.95rem;
 	left: 0;
 	right: 0;
 	bottom: 0;
@@ -234,7 +234,7 @@ export default {
 
 @media screen and (max-width: 740px) {
 	.task-list {
-		top: 2.45rem;
+		top: 2.35rem;
 	}
 
 	.task-list {
@@ -247,6 +247,10 @@ export default {
 
 	.task-list::-webkit-scrollbar-thumb {
 		border: 0;
+	}
+
+	.notice {
+		font-size: 0.8rem;
 	}
 }
 </style>
