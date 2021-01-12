@@ -85,20 +85,36 @@ export default {
 	--background-offset: #dfdfdf;
 	--background-secondary: #C4C4C4;
 	--background-secondary-offset: #6C6C6C;
-	--dark-red: #992222;
-	--light-red: #c33737;
+	/* --dark-red: #992222;
+	--light-red: #c33737; */
 	--text: #000000;
 	--text-offset: #494949;
 	--text-secondary: #222222;
-	--border-color: #000000;
+	/* --border-color: #000000; */
 }
 
 .body-wrapper {
+	position: absolute;
+	top: 6rem;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	width: 55rem;
-	max-height: 32rem;
-	flex: 1;
-	margin: 0 auto;
+	margin: 0 auto 1rem auto;
 	border-radius: 30px;
 	background-color: var(--background-secondary);
+}
+
+@media screen and (max-width: 1450px) {
+	.body-wrapper {
+		top: 4.3rem;
+		width: 92vw;
+	}
+}
+
+@media screen and (max-width: 740px) {
+	.body-wrapper {
+		top: 3.6rem;
+	}
 }
 </style>

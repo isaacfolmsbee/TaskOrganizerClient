@@ -181,6 +181,7 @@ export default {
 <style scoped>
 .modal-bg {
 	position: fixed;
+	z-index: 1;
 	width: 100%;
 	height: 100vh;
 	top: 0;
@@ -301,4 +302,84 @@ export default {
 	width: 4rem;
 }
 
+/* @media screen and (max-width: 1350px) {
+	.modal-body {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		background-color: #ffffff;
+		padding: 0 20vh;
+		border-radius: 0;
+	}
+
+	#modal-close {
+		top: 0.55rem;
+		right: 0.65rem;
+	}
+
+	.modal-body #notice {
+		font-size: 0.4rem;
+		padding: 0.2rem 0.3rem;
+		margin: -0.2rem 0;
+		border-radius: 12px;
+	}
+
+	.modal-body input {
+		width: 9.8rem;
+		height: 1.5rem;
+		margin-top: 0.75rem;
+		border: 0.1rem #000000;
+		border-style: none none solid none;
+		padding-left: 0.2rem;
+		transition: 400ms;
+	}
+
+	.modal-body input:focus {
+		background-color: #dfdfdf;
+	}
+
+	.modal-body select {
+		background-color: #C4C4C4;
+		border: none;
+	}
+
+	.modal-body button {
+		padding: 0.35rem 0.45rem;
+		margin: 0.5rem 0;
+		background-color: #C4C4C4;
+		color: #494949;
+		border: none;
+		border-radius: 25px;
+		font-family: 'Rubik', sans-serif;
+		cursor: pointer;
+		transition: 400ms;
+	}
+
+	.modal-body button:hover {
+		color: #000000;
+	}
+
+	.modal-body .dateField {
+		width: 10rem;
+		display: flex;
+		justify-content: space-around;
+	}
+
+	.modal-body .dateField input {
+		width: 3rem;
+	}
+
+	.modal-body .timeSelector {
+		display: inline;
+	}
+
+	.modal-body .timeSelector input {
+		width: 6rem;
+	}
+
+	.modal-body .timeSelector select {
+		height: 1.5rem;
+		width: 4rem;
+	}
+} */
 </style>

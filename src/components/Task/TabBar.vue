@@ -71,4 +71,17 @@ export default {
 .task-tab .category.selected h1 {
 	color: var(--text);
 }
+
+@media screen and (max-width: 740px) {
+	.task-tab {
+		height: 1.8rem;
+		font-size: 0.3rem;
+	}
+
+	.task-tab .category {
+		padding: 0.2rem 0.4rem;
+		border-radius: 15px;
+		margin: 0 0.2rem;
+	}
+}
 </style>

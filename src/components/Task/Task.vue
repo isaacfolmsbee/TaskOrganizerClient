@@ -96,11 +96,8 @@ export default {
 }
 
 .task-datetime {
-	grid-column: 1/2;
+	grid-column: 1/3;
 	display: flex;
-
-	/* To center based on task-wrapper */
-	margin-left: 12.5%;
 }
 
 .task-datetime p {
@@ -130,14 +127,13 @@ export default {
 }
 
 .task-buttons {
-	/* Unneeded? */
 	grid-column: 2/3;
-	grid-row: 1/3;
+	grid-row: 2/3;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin: 0.5rem 0;
-	/*  */
+	margin-top: -1.155rem;
+	margin-right: 0.5rem;
 }
 
 .task-buttons h4 {
@@ -149,5 +145,44 @@ export default {
 
 .task-buttons h4:hover {
 	color: var(--text-secondary-offset);
+}
+
+@media screen and (max-width: 850px) {
+	.task-wrapper {
+		width: 93%;
+		height: 3.25rem;
+		border-radius: 15px;
+		margin: 0.3rem auto 0 auto;
+	}
+
+	.task-wrapper:last-child {
+		margin-bottom: 0.3rem;
+	}
+
+	.task-datetime p {
+		font-size: 0.55rem;
+	}
+
+	.task-datetime p:first-child {
+		text-align: right;
+		margin-right: 0.2rem;
+	}
+
+	.task-datetime p:last-child {
+		margin-left: 0.2rem;
+	}
+
+	.task-desc h1 {
+		font-size: 0.65rem;
+	}
+
+	.task-buttons {
+		font-size: 0.55rem;
+		margin-top: -0.6rem;
+	}
+
+	.task-buttons h4 {
+		margin: 0.35rem 0;
+	}
 }
 </style>

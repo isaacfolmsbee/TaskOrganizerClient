@@ -88,8 +88,8 @@ export default {
 <style scoped>
 .header-wrapper {
 	width: 60rem;
-	height: 100px;
-	margin: 20px auto 20px auto;
+	height: 4rem;
+	margin: 1rem auto;
 	background-color: var(--background-secondary);
 	border-radius: 25px;
 	display: grid;
@@ -123,7 +123,6 @@ export default {
 	font-size: 2.25em;
 	text-decoration: none;
 	color: var(--text);
-	font-weight: 700;
 }
 
 .links {
@@ -147,5 +146,43 @@ export default {
 
 .links a:hover {
 	background-color: var(--background-offset);
+}
+
+@media screen and (max-width: 1450px) {
+	.header-wrapper {
+		width: 95vw;
+		height: 3.5rem;
+		margin: 0.4rem auto;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.title a {
+		font-size: 2rem;
+	}
+
+	.links a {
+		font-size: 0.85em;
+	}
+}
+
+@media screen and (max-width: 740px) {
+	.header-wrapper {
+		height: 2.8rem;
+		grid-template-columns: 1fr 3fr 1fr;
+	}
+
+	.theme-selector img {
+		width: 1.2rem;
+		height: 1.2rem;
+	}
+
+	.title a {
+		font-size: 1.1rem;
+	}
+
+	.links a {
+		font-size: 0.55em;
+	}
 }
 </style>

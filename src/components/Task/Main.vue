@@ -193,15 +193,18 @@ export default {
 
 <style scoped>
 .task-list {
+	position: absolute;
+	top: 3.45rem;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	width: 92.5%;
-	height: 28.46rem;
 	overflow: auto;
-	margin: 0.25rem auto;
+	margin: 0.1rem auto;
 }
 
 /* Firefox scroll-bar */
 .task-list {
-	scrollbar-width: 0.5rem;
 	scrollbar-color: var(--background) var(--background-secondary-offset);
 }
 
@@ -227,5 +230,23 @@ export default {
 	width: 80%;
 	text-align: center;
 	color: var(--text);
+}
+
+@media screen and (max-width: 740px) {
+	.task-list {
+		top: 2.45rem;
+	}
+
+	.task-list {
+		scrollbar-width: thin;
+	}
+
+	.task-list::-webkit-scrollbar {
+		width: 0.35rem;
+	}
+
+	.task-list::-webkit-scrollbar-thumb {
+		border: 0;
+	}
 }
 </style>

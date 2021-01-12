@@ -22,6 +22,7 @@ export default {
 }
 
 .add-task h4 {
+	min-width: 3rem;
 	padding: 0.1rem 0.2rem;
 	font-size: 0.65rem;
 	background-color: var(--background-secondary-offset);
@@ -36,5 +37,25 @@ export default {
 	background-color: var(--background-secondary-offset);
 	border: 1.5px solid var(--background-secondary-offset);
 	border-radius: 10px;
+}
+
+@media screen and (max-width: 740px) {
+	.add-task {
+		height: 0.5rem;
+	}
+
+	.add-task h4 {
+		min-width: fit-content;
+		padding: 0.1rem 0.175rem;
+		font-size: 0.5rem;
+		border-radius: 8px;
+	}
+
+	.add-task hr {
+		width: 42.5%;
+		height: 0.125rem;
+		margin: 0 0.35rem;
+		border-radius: 6px;
+	}
 }
 </style>
